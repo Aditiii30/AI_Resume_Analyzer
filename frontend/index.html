@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>AI Resume Analyzer</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+</head>
+
+<body>
+
+<header class="navbar">
+<h1><i class="fa-solid fa-brain"></i> AI Resume Analyzer</h1>
+<h2>Smart AI system to evaluate your resume against job requirements</h2>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<div class="upload-grid">
+
+<!-- Resume Upload -->
+
+<div class="upload-card">
+
+<h2>Upload Your Resume</h2>
+
+<label class="upload-box">
+<input type="file" id="resumeFile" accept=".pdf">
+<i class="fa-solid fa-file-arrow-up"></i>
+<p id="resumeText">Upload Resume (PDF)</p>
+</label>
+
+</div>
+
+<!-- Job Description Upload -->
+
+<div class="upload-card">
+
+<h2>Upload Job Description</h2>
+
+<label class="upload-box">
+<input type="file" id="jobFile" accept=".pdf">
+<i class="fa-solid fa-upload"></i>
+<p id="jobText">Upload Job Description</p>
+</label>
+
+<p class="or-text">OR</p>
+
+<textarea id="jobDescription" placeholder="Paste job description here..."></textarea>
+
+</div>
+
+</div>
+
+<button id="analyzeBtn">
+<i class="fa-solid fa-magnifying-glass"></i>
+Analyze Resume
+</button>
+
+</div>
+
+<div id="loading" class="loading hidden">
+<div class="loader"></div>
+<p>AI is analyzing your resume...</p>
+</div>
+
+<!-- RESULTS -->
+
+<div id="results" class="results hidden">
+
+<div class="score-card">
+
+<h2>Resume Score</h2>
+
+<div class="score-circle">
+<span id="score"></span>
+</div>
+
+<p class="score-label">ATS Compatibility Score</p>
+
+</div>
+
+<div class="skills">
+
+<div class="skill-box matched">
+<h3>Matched Skills</h3>
+<ul id="matchedSkills"></ul>
+</div>
+
+<div class="skill-box missing">
+<h3>Missing Skills</h3>
+<ul id="missingSkills"></ul>
+</div>
+
+</div>
+
+<div class="suggestions">
+
+<h3>AI Suggestions</h3>
+
+<div id="suggestions"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

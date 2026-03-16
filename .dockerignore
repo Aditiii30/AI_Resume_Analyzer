@@ -1,0 +1,15 @@
+venv/
+uploads/
+__pycache__/
+*.pyc
+.env
+.vscode/
+.git/
+*.pdf
+*.zip
+*.tar
+*.pt
+*.bin
+*.model
+*.pkl
+*.h5

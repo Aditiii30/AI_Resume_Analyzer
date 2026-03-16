@@ -1,0 +1,21 @@
+python
+machine learning
+deep learning
+data science
+sql
+tensorflow
+pytorch
+opencv
+nlp
+fastapi
+flask
+django
+react
+nodejs
+javascript
+java
+c++
+docker
+aws
+git
+linux
