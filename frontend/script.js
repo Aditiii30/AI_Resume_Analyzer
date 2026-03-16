@@ -53,7 +53,7 @@ formData.append("job_file",jobFile)
 
 try{
 
-const response=await  fetch("https://ai-resume-analyzer-gxxo.onrender.com/upload",{
+const response=await  fetch("https://ai-resume-analyzer-p08i.onrender.com/upload",{
 method:"POST",
 body:formData
 })
