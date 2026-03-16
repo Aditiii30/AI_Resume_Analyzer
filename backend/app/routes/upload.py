@@ -3,10 +3,10 @@ from typing import Optional
 import shutil
 import os
 
-from app.services.resume_parser import extract_text_from_pdf
-from app.services.skill_extractor import extract_skills
-from app.services.semantic_matcher import calculate_similarity
-from app.services.llm_suggester import generate_suggestions
+from backend.app.services.resume_parser import extract_text_from_pdf
+from backend.app.services.skill_extractor import extract_skills
+from backend.app.services.semantic_matcher import calculate_similarity
+from backend.app.services.llm_suggester import generate_suggestions
 
 router = APIRouter()
 
