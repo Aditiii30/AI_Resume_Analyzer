@@ -51,14 +51,26 @@ if(jobFile){
 formData.append("job_file",jobFile)
 }
 
-try{
+try {
 
-const response=await  fetch("https://ai-resume-analyzer-eun4.onrender.com/upload",{
-method:"POST",
-body:formData
+const response = await fetch("https://ai-resume-analyzer-eun4.onrender.com/upload", {
+    method: "POST",
+    body: formData
 })
 
-const data=await response.json()
+const text = await response.text()
+
+console.log("STATUS:", response.status)
+console.log("RESPONSE:", text)
+
+if (!response.ok) {
+    alert("Backend Error:\n" + text)
+    return
+}
+
+const data = JSON.parse(text)
+
+
 
 document.getElementById("loading").classList.add("hidden")
 document.getElementById("results").classList.remove("hidden")
