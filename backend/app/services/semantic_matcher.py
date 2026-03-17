@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer, util
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
 
 
 def calculate_similarity(resume_skills, job_skills):

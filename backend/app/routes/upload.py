@@ -42,7 +42,7 @@ async def upload_resume(
 
     # Extract skills
     resume_skills = extract_skills(resume_text)
-    job_skills = extract_skills(job_description)
+    job_skills = extract_skills(job_description) if job_description else []
     
 
     # Matched skills

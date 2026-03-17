@@ -5,6 +5,7 @@ from backend.app.routes import upload
 
 app = FastAPI()
 
+
 # Allow frontend (port 5500) to access backend
 app.add_middleware(
     CORSMiddleware,
