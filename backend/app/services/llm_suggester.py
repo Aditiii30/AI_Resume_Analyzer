@@ -4,8 +4,6 @@ import os
 
 load_dotenv()
 
-
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_suggestions(resume_skills, job_skills, missing_skills, score):
@@ -24,7 +22,8 @@ Missing skills:
 
 Match score: {score}
 
-Provide 2–3 professional suggestions to improve the resume.
+Provide 2–3 short professional suggestions.
+Return each suggestion on a new line.
 """
 
     try:
@@ -42,28 +41,31 @@ Provide 2–3 professional suggestions to improve the resume.
 
         print("LLM RESPONSE:", result)
 
-        return result
+        # ✅ Convert string → list (IMPORTANT FIX)
+        suggestions = [s.strip() for s in result.split("\n") if s.strip()]
+
+        return suggestions
 
     except Exception as e:
 
         print("LLM ERROR:", e)
 
-        # fallback suggestions if LLM fails
+        # ✅ ALWAYS return LIST (IMPORTANT)
         suggestions = []
 
         if missing_skills:
             skill_list = ", ".join(missing_skills)
             suggestions.append(
-                f"Your resume is missing some important skills such as {skill_list}. Adding projects or experience related to these skills could improve your match."
+                f"Your resume is missing important skills like {skill_list}. Add projects or experience related to these."
             )
 
         if score < 50:
             suggestions.append(
-                "Your resume has a relatively low match with the job description. Consider tailoring your resume to highlight relevant technologies."
+                "Your resume score is low. Tailor your resume based on the job description."
             )
 
         suggestions.append(
-            "Consider adding measurable achievements in your projects such as accuracy improvements or performance gains."
+            "Include measurable achievements like accuracy, performance improvements, or impact."
         )
 
-        return " ".join(suggestions)
+        return suggestions
