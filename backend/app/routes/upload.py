@@ -22,23 +22,19 @@ async def upload_resume(
 ):
 
     try:
-        # -------------------------------
-        # Save resume safely
-        # -------------------------------
+        # ---------------- SAVE RESUME ----------------
         resume_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
         with open(resume_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        # Extract resume text
+        # ---------------- EXTRACT RESUME TEXT ----------------
         try:
             resume_text = extract_text_from_pdf(resume_path)
         except Exception as e:
-            return {"error": f"Error reading resume PDF: {str(e)}"}
+            raise Exception(f"Resume PDF error: {str(e)}")
 
-        # -------------------------------
-        # Handle job description
-        # -------------------------------
+        # ---------------- HANDLE JOB DESCRIPTION ----------------
         if job_file:
             job_path = os.path.join(UPLOAD_FOLDER, job_file.filename)
 
@@ -48,41 +44,30 @@ async def upload_resume(
             try:
                 job_description = extract_text_from_pdf(job_path)
             except Exception as e:
-                return {"error": f"Error reading job PDF: {str(e)}"}
+                raise Exception(f"Job PDF error: {str(e)}")
 
-        # -------------------------------
-        # Extract skills safely
-        # -------------------------------
+        # ---------------- EXTRACT SKILLS ----------------
         resume_skills = extract_skills(resume_text) if resume_text else []
         job_skills = extract_skills(job_description) if job_description else []
 
-        # -------------------------------
-        # Skill comparison
-        # -------------------------------
+        # ---------------- MATCHING ----------------
         matched_skills = list(set(resume_skills) & set(job_skills))
         missing_skills = list(set(job_skills) - set(resume_skills))
 
-        # -------------------------------
-        # Skill score
-        # -------------------------------
+        # ---------------- SCORE ----------------
         score = 0
-        if len(job_skills) > 0:
+        if job_skills:
             score = (len(matched_skills) / len(job_skills)) * 100
 
-        # -------------------------------
-        # Semantic similarity (SAFE)
-        # -------------------------------
+        # ---------------- SEMANTIC ----------------
         if job_skills:
             semantic_score = calculate_similarity(resume_skills, job_skills) * 100
         else:
             semantic_score = 0
 
-        # Final score
         resume_score = (score * 0.7) + (semantic_score * 0.3)
 
-        # -------------------------------
-        # Suggestions (SAFE)
-        # -------------------------------
+        # ---------------- SUGGESTIONS ----------------
         try:
             suggestions = generate_suggestions(
                 resume_skills,
@@ -94,23 +79,16 @@ async def upload_resume(
             suggestions = []
 
             if missing_skills:
-                skill_list = ", ".join(missing_skills)
                 suggestions.append(
-                    f"Your resume is missing important skills such as {skill_list}. Add projects or experience for better matching."
+                    f"Missing skills: {', '.join(missing_skills)}"
                 )
 
             if resume_score < 50:
-                suggestions.append(
-                    "Your resume has a low match score. Try aligning it more with the job description."
-                )
+                suggestions.append("Improve alignment with job description.")
 
-            suggestions.append(
-                "Include measurable achievements (accuracy, performance, impact) in your projects."
-            )
+            suggestions.append("Add measurable achievements.")
 
-        # -------------------------------
-        # Final response
-        # -------------------------------
+        # ---------------- FINAL RESPONSE ----------------
         return {
             "resume_score": round(resume_score, 2),
             "matched_skills": matched_skills,
@@ -119,4 +97,9 @@ async def upload_resume(
         }
 
     except Exception as e:
-        return {"error": f"Internal Server Error: {str(e)}"}
+        return {
+            "resume_score": 0,
+            "matched_skills": [],
+            "missing_skills": [],
+            "suggestions": [f"Error: {str(e)}"]
+        }

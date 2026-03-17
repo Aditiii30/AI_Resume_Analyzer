@@ -63,66 +63,48 @@ const text = await response.text()
 console.log("STATUS:", response.status)
 console.log("RESPONSE:", text)
 
-if (!response.ok) {
+const data = JSON.parse(text)
+
+// SAFETY CHECK
+if (!data.resume_score && data.resume_score !== 0) {
     alert("Backend Error:\n" + text)
     return
 }
 
-const data = JSON.parse(text)
-
-
-
 document.getElementById("loading").classList.add("hidden")
 document.getElementById("results").classList.remove("hidden")
 
-document.getElementById("score").innerText=data.resume_score+"%"
+// SCORE
+document.getElementById("score").innerText = data.resume_score + "%"
 
-/* MATCHED SKILLS */
+// MATCHED
+const matched = document.getElementById("matchedSkills")
+matched.innerHTML = ""
 
-const matched=document.getElementById("matchedSkills")
-matched.innerHTML=""
-
-data.matched_skills.forEach(skill=>{
-matched.innerHTML+=`<li>
-<i class="fa-solid fa-circle-check" style="color:green"></i> ${skill}
-</li>`
+data.matched_skills.forEach(skill => {
+    matched.innerHTML += `<li>✔ ${skill}</li>`
 })
 
-/* MISSING SKILLS */
+// MISSING
+const missing = document.getElementById("missingSkills")
+missing.innerHTML = ""
 
-const missing=document.getElementById("missingSkills")
-missing.innerHTML=""
-
-data.missing_skills.forEach(skill=>{
-missing.innerHTML+=`<li>
-<i class="fa-solid fa-circle-xmark" style="color:red"></i> ${skill}
-</li>`
+data.missing_skills.forEach(skill => {
+    missing.innerHTML += `<li>✘ ${skill}</li>`
 })
 
-/* SUGGESTIONS */
+// SUGGESTIONS
+const suggestions = document.getElementById("suggestions")
+suggestions.innerHTML = ""
 
-const suggestions=document.getElementById("suggestions")
-suggestions.innerHTML=""
-
-if(Array.isArray(data.suggestions)){
-data.suggestions.forEach(s=>{
-suggestions.innerHTML+=`<p>${s}</p>`
+data.suggestions.forEach(s => {
+    suggestions.innerHTML += `<p>${s}</p>`
 })
-}
-else{
-suggestions.innerHTML=`<p>${data.suggestions}</p>`
-}
-
-document.getElementById("results").scrollIntoView({behavior:"smooth"})
 
 }
-
 catch(error){
-
-document.getElementById("loading").classList.add("hidden")
-
-alert("Error connecting backend")
-
+    document.getElementById("loading").classList.add("hidden")
+    alert("Error connecting backend")
 }
 
 })
